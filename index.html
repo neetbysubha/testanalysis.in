@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Analysis Submission System</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Design System Variables */
+            --color-white: rgba(255, 255, 255, 1);
+            --color-black: rgba(0, 0, 0, 1);
+            --color-cream-50: rgba(252, 252, 249, 1);
+            --color-cream-100: rgba(255, 255, 253, 1);
+            --color-gray-200: rgba(245, 245, 245, 1);
+            --color-gray-300: rgba(167, 169, 169, 1);
+            --color-gray-400: rgba(119, 124, 124, 1);
+            --color-slate-500: rgba(98, 108, 113, 1);
+            --color-brown-600: rgba(94, 82, 64, 1);
+            --color-charcoal-700: rgba(31, 33, 33, 1);
+            --color-charcoal-800: rgba(38, 40, 40, 1);
+            --color-slate-900: rgba(19, 52, 59, 1);
+            --color-teal-300: rgba(50, 184, 198, 1);
+            --color-teal-400: rgba(45, 166, 178, 1);
+            --color-teal-500: rgba(33, 128, 141, 1);
+            --color-teal-600: rgba(29, 116, 128, 1);
+            --color-teal-700: rgba(26, 104, 115, 1);
+            --color-red-400: rgba(255, 84, 89, 1);
+            --color-red-500: rgba(192, 21, 47, 1);
+            --color-orange-400: rgba(230, 129, 97, 1);
+            --color-orange-500: rgba(168, 75, 47, 1);
+
+            /* RGB versions for opacity control */
+            --color-brown-600-rgb: 94, 82, 64;
+            --color-teal-500-rgb: 33, 128, 141;
+            --color-slate-900-rgb: 19, 52, 59;
+            --color-slate-500-rgb: 98, 108, 113;
+            --color-red-500-rgb: 192, 21, 47;
+            --color-red-400-rgb: 255, 84, 89;
+
+            /* Background color tokens */
+            --color-bg-1: rgba(59, 130, 246, 0.08);
+            --color-bg-2: rgba(245, 158, 11, 0.08);
+            --color-bg-3: rgba(34, 197, 94, 0.08);
+            --color-bg-4: rgba(239, 68, 68, 0.08);
+            --color-bg-5: rgba(147, 51, 234, 0.08);
+            --color-bg-6: rgba(249, 115, 22, 0.08);
+            --color-bg-7: rgba(236, 72, 153, 0.08);
+            --color-bg-8: rgba(6, 182, 212, 0.08);
+
+            /* Semantic Color Tokens */
+            --color-background: var(--color-cream-50);
+            --color-surface: var(--color-cream-100);
+            --color-text: var(--color-slate-900);
+            --color-text-secondary: var(--color-slate-500);
+            --color-primary: var(--color-teal-500);
+            --color-primary-hover: var(--color-teal-600);
+            --color-primary-active: var(--color-teal-700);
+            --color-secondary: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-secondary-hover: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-secondary-active: rgba(var(--color-brown-600-rgb), 0.25);
+            --color-border: rgba(var(--color-brown-600-rgb), 0.2);
+            --color-btn-primary-text: var(--color-cream-50);
+            --color-card-border: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-card-border-inner: rgba(var(--color-brown-600-rgb), 0.12);
+            --color-error: var(--color-red-500);
+            --color-success: var(--color-teal-500);
+            --color-warning: var(--color-orange-500);
+            --color-info: var(--color-slate-500);
+            --color-focus-ring: rgba(var(--color-teal-500-rgb), 0.4);
+            --color-select-caret: rgba(var(--color-slate-900-rgb), 0.8);
+
+            /* Typography */
+            --font-family-base: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-size-xs: 11px;
+            --font-size-sm: 12px;
+            --font-size-base: 14px;
+            --font-size-md: 14px;
+            --font-size-lg: 16px;
+            --font-size-xl: 18px;
+            --font-size-2xl: 20px;
+            --font-size-3xl: 24px;
+            --font-size-4xl: 30px;
+            --font-weight-normal: 400;
+            --font-weight-medium: 500;
+            --font-weight-semibold: 550;
+            --font-weight-bold: 600;
+            --line-height-tight: 1.2;
+            --line-height-normal: 1.5;
+            --letter-spacing-tight: -0.01em;
+
+            /* Spacing */
+            --space-4: 4px;
+            --space-6: 6px;
+            --space-8: 8px;
+            --space-12: 12px;
+            --space-16: 16px;
+            --space-20: 20px;
+            --space-24: 24px;
+            --space-32: 32px;
+            --space-48: 48px;
+
+            /* Border Radius */
+            --radius-sm: 6px;
+            --radius-base: 8px;
+            --radius-md: 10px;
+            --radius-lg: 12px;
+            --radius-full: 9999px;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.04), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -2px rgba(0, 0, 0, 0.02);
+
+            /* Animation */
+            --duration-fast: 150ms;
+            --duration-normal: 250ms;
+            --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        /* Base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-family-base);
+            background-color: var(--color-background);
+            color: var(--color-text);
+            line-height: var(--line-height-normal);
+            font-size: var(--font-size-base);
+        }
+
+        /* Header */
+        .header {
+            background: var(--color-surface);
+            border-bottom: 1px solid var(--color-card-border);
+            padding: var(--space-24) 0;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-24);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: var(--font-size-3xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--space-12);
+        }
+
+        .header-icon {
+            width:  00px;
+            height: 00px;
+            background: var(--color-primary);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            gap: var(--space-8);
+            background: var(--color-bg-1);
+            border-radius: var(--radius-lg);
+            padding: var(--space-6);
+        }
+
+        .nav-tab {
+            padding: var(--space-12) var(--space-24);
+            border: none;
+            background: transparent;
+            color: var(--color-text-secondary);
+            cursor: pointer;
+            border-radius: var(--radius-base);
+            font-weight: var(--font-weight-medium);
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .nav-tab.active {
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: var(--color-secondary);
+            color: var(--color-text);
+        }
+
+        /* Main content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-32) var(--space-24);
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* Form styles */
+        .form-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            padding: var(--space-32);
+            box-shadow: var(--shadow-md);
+            margin-bottom: var(--space-32);
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-24);
+            margin-bottom: var(--space-32);
+        }
+
+        .form-group {
+            margin-bottom: var(--space-20);
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-8);
+            font-weight: var(--font-weight-medium);
+            color: var(--color-text);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: var(--space-12);
+            border: 1px solid var(--color-border);
+            border-radius: var(--radius-base);
+            background: var(--color-surface);
+            color: var(--color-text);
+            font-size: var(--font-size-base);
+            transition: all var(--duration-fast) var(--ease-standard);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px var(--color-focus-ring);
+        }
+
+        .form-control.error {
+            border-color: var(--color-error);
+        }
+
+        .error-message {
+            color: var(--color-error);
+            font-size: var(--font-size-sm);
+            margin-top: var(--space-4);
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        /* Range slider */
+        .range-container {
+            position: relative;
+            margin: var(--space-16) 0;
+        }
+
+        .range-slider {
+            width: 100%;
+            height: 6px;
+            border-radius: var(--radius-full);
+            background: var(--color-secondary);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--color-primary);
+            cursor: pointer;
+            border: 2px solid var(--color-surface);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .range-value {
+            display: inline-block;
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+            padding: var(--space-6) var(--space-12);
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-sm);
+            font-weight: var(--font-weight-medium);
+            margin-left: var(--space-8);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--space-12) var(--space-24);
+            border: none;
+            border-radius: var(--radius-base);
+            font-size: var(--font-size-base);
+            font-weight: var(--font-weight-medium);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all var(--duration-normal) var(--ease-standard);
+            gap: var(--space-8);
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: var(--color-btn-primary-text);
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+        }
+
+        .btn-secondary {
+            background: var(--color-secondary);
+            color: var(--color-text);
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--color-secondary-hover);
+        }
+
+        .btn-success {
+            background: var(--color-success);
+            color: var(--color-btn-primary-text);
+        }
+
+        .btn-export {
+            background: var(--color-bg-3);
+            color: var(--color-success);
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .btn-large {
+            padding: var(--space-16) var(--space-32);
+            font-size: var(--font-size-lg);
+        }
+
+        .btn-full {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* Statistics cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-24);
+            margin-bottom: var(--space-32);
+        }
+
+        .stat-card {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            padding: var(--space-24);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-value {
+            font-size: var(--font-size-4xl);
+            font-weight: var(--font-weight-bold);
+            color: var(--color-primary);
+            margin-bottom: var(--space-8);
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-weight: var(--font-weight-medium);
+        }
+
+        /* Charts container */
+        .chart-container {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            padding: var(--space-24);
+            margin-bottom: var(--space-32);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .chart-title {
+            font-size: var(--font-size-xl);
+            font-weight: var(--font-weight-semibold);
+            margin-bottom: var(--space-20);
+            color: var(--color-text);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+
+        /* Data table */
+        .table-container {
+            background: var(--color-surface);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--color-card-border);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .table-header {
+            padding: var(--space-24);
+            border-bottom: 1px solid var(--color-card-border-inner);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: var(--space-16);
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: var(--space-12);
+            text-align: left;
+            border-bottom: 1px solid var(--color-card-border-inner);
+        }
+
+        .data-table th {
+            background: var(--color-bg-1);
+            font-weight: var(--font-weight-semibold);
+            color: var(--color-text);
+        }
+
+        .data-table tr:hover {
+            background: var(--color-bg-2);
+        }
+
+        /* Alert messages */
+        .alert {
+            padding: var(--space-16);
+            border-radius: var(--radius-base);
+            margin-bottom: var(--space-20);
+            font-weight: var(--font-weight-medium);
+        }
+
+        .alert-success {
+            background: rgba(var(--color-success-rgb), 0.1);
+            color: var(--color-success);
+            border: 1px solid rgba(var(--color-success-rgb), 0.2);
+        }
+
+        .alert-error {
+            background: rgba(var(--color-red-500-rgb), 0.1);
+            color: var(--color-error);
+            border: 1px solid rgba(var(--color-red-500-rgb), 0.2);
+        }
+
+        /* Loading spinner */
+        .spinner {
+            border: 3px solid var(--color-secondary);
+            border-top: 3px solid var(--color-primary);
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: var(--space-8);
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: var(--space-16);
+                text-align: center;
+            }
+
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+
+            .main-content {
+                padding: var(--space-16);
+            }
+
+            .form-card {
+                padding: var(--space-20);
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+                gap: var(--space-16);
+            }
+
+            .table-container {
+                overflow-x: auto;
+            }
+
+            .data-table {
+                min-width: 800px;
+            }
+
+            .chart-wrapper {
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: var(--font-size-2xl);
+            }
+
+            .nav-tab {
+                padding: var(--space-8) var(--space-16);
+                font-size: var(--font-size-sm);
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Progress bar */
+        .progress-container {
+            background: var(--color-secondary);
+            border-radius: var(--radius-full);
+            height: 6px;
+            margin: var(--space-16) 0;
+        }
+
+        .progress-bar {
+            background: var(--color-primary);
+            height: 100%;
+            border-radius: var(--radius-full);
+            transition: width var(--duration-normal) var(--ease-standard);
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: var(--space-48);
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--color-bg-1);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto var(--space-16);
+            font-size: var(--font-size-3xl);
+            color: var(--color-primary);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <img src="mascot.png" alt="Logo" width="200">
+            <h1>
+                <div class="header-icon">📈</div>
+                Test Analysis Submission System
+            </h1>
+            <nav class="nav-tabs">
+                <button class="nav-tab active" data-section="submit">📝 Submit Test</button>
+                <button class="nav-tab" data-section="statistics">📊 Statistics</button>
+                <button class="nav-tab" data-section="data">📋 View Data</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Submit Test Section -->
+        <section id="submit" class="section active">
+            <div class="form-card">
+                <h2 style="margin-bottom: 24px; font-size: 24px; color: var(--color-primary);">📝 Test Analysis Submission</h2>
+                <div id="alert-container"></div>
+                
+                <form id="testForm">
+                    <div class="form-grid">
+                        <!-- Coaching Institute -->
+                        <div class="form-group">
+                            <label class="form-label" for="coaching_institute">Coaching Institute *</label>
+                            <select class="form-control" id="coaching_institute" name="coaching_institute" required>
+                                <option value="">Select Coaching Institute</option>
+                                <option value="Aakash">Aakash</option>
+                                <option value="Allen">Allen</option>
+                                <option value="PW">PW</option>
+                                <option value="National Testing Abhyas">National Testing Abhyas</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Subject -->
+                        <div class="form-group">
+                            <label class="form-label" for="subject">Subject *</label>
+                            <select class="form-control" id="subject" name="subject" required>
+                                <option value="">Select Subject</option>
+                                <option value="Physics">Physics</option>
+                                <option value="Chemistry">Chemistry</option>
+                                <option value="Botany">Botany</option>
+                                <option value="Zoology">Zoology</option>
+                                <option value="PCB-NEET">PCB-NEET</option>
+                            </select>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Chapter -->
+                        <div class="form-group">
+                            <label class="form-label" for="chapter">Chapter *</label>
+                            <input type="text" class="form-control" id="chapter" name="chapter" placeholder="Enter chapter name" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Test Date -->
+                        <div class="form-group">
+                            <label class="form-label" for="test_date">Test Date *</label>
+                            <input type="date" class="form-control" id="test_date" name="test_date" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Test Booklet Code -->
+                        <div class="form-group">
+                            <label class="form-label" for="test_booklet_code">Test Booklet Code *</label>
+                            <input type="text" class="form-control" id="test_booklet_code" name="test_booklet_code" placeholder="Enter test booklet code" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Total Questions -->
+                        <div class="form-group">
+                            <label class="form-label" for="total_questions">Total Number of Questions *</label>
+                            <input type="number" class="form-control" id="total_questions" name="total_questions" min="1" placeholder="Enter total questions" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Total Marks -->
+                        <div class="form-group">
+                            <label class="form-label" for="total_marks">Total Marks *</label>
+                            <input type="number" class="form-control" id="total_marks" name="total_marks" min="1" placeholder="Enter total marks" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Marks Obtained -->
+                        <div class="form-group">
+                            <label class="form-label" for="marks_obtained">Marks Obtained *</label>
+                            <input type="number" class="form-control" id="marks_obtained" name="marks_obtained" min="0" placeholder="Enter marks obtained" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Correct Questions -->
+                        <div class="form-group">
+                            <label class="form-label" for="correct_questions">Total Correct Questions *</label>
+                            <input type="number" class="form-control" id="correct_questions" name="correct_questions" min="0" placeholder="Enter correct questions" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Incorrect Questions -->
+                        <div class="form-group">
+                            <label class="form-label" for="incorrect_questions">Total Incorrect Questions *</label>
+                            <input type="number" class="form-control" id="incorrect_questions" name="incorrect_questions" min="0" placeholder="Enter incorrect questions" required>
+                            <div class="error-message"></div>
+                        </div>
+
+                        <!-- Unattempted Questions -->
+                        <div class="form-group">
+                            <label class="form-label" for="unattempted_questions">Total Unattempted Questions *</label>
+                            <input type="number" class="form-control" id="unattempted_questions" name="unattempted_questions" min="0" placeholder="Enter unattempted questions" required>
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+
+                    <!-- Review Scale -->
+                    <div class="form-group">
+                        <label class="form-label" for="review_scale">Review Scale (1-10) *</label>
+                        <div class="range-container">
+                            <input type="range" class="range-slider" id="review_scale" name="review_scale" min="1" max="10" value="5" required>
+                            <span class="range-value" id="review_scale_value">5</span>
+                        </div>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <!-- Test Review -->
+                    <div class="form-group">
+                        <label class="form-label" for="test_review">Review of Test *</label>
+                        <textarea class="form-control" id="test_review" name="test_review" rows="4" placeholder="Enter your detailed review of the test..." required></textarea>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <!-- Remarks -->
+                    <div class="form-group">
+                        <label class="form-label" for="remarks">Any Remarks</label>
+                        <textarea class="form-control" id="remarks" name="remarks" rows="3" placeholder="Enter any additional remarks (optional)..."></textarea>
+                        <div class="error-message"></div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-large btn-full" id="submitBtn">
+                            <span class="submit-text">Submit Test Analysis</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Statistics Section -->
+        <section id="statistics" class="section">
+            <h2 style="margin-bottom: 32px; font-size: 24px; color: var(--color-primary);">📊 Performance Statistics</h2>
+            
+            <!-- Stats Cards -->
+            <div class="stats-grid" id="statsCards">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Charts -->
+            <div class="chart-container">
+                <h3 class="chart-title">📈 Performance Trend</h3>
+                <div class="chart-wrapper">
+                    <canvas id="performanceChart"></canvas>
+                </div>
+            </div>
+
+            <div class="chart-container">
+                <h3 class="chart-title">📚 Subject Distribution</h3>
+                <div class="chart-wrapper">
+                    <canvas id="subjectChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Data View Section -->
+        <section id="data" class="section">
+            <div class="table-container">
+                <div class="table-header">
+                    <h2 style="color: var(--color-primary); margin: 0;">📋 Test Records</h2>
+                    <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+                        <input type="text" class="form-control search-box" id="searchInput" placeholder="🔍 Search records...">
+                        <button class="btn btn-export" id="exportBtn">
+                            📥 Export to CSV
+                        </button>
+                    </div>
+                </div>
+                <div id="tableContainer">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Application state
+        let testRecords = [];
+        let charts = {};
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStoredData();
+            setupEventListeners();
+            updateRangeValue();
+            renderStatistics();
+            renderDataTable();
+        });
+
+        // Load data from storage
+        function loadStoredData() {
+            try {
+                const stored = JSON.parse(window.sessionStorage?.getItem('testRecords') || '[]');
+                testRecords = stored;
+            } catch (e) {
+                // Fallback to in-memory storage
+                testRecords = getSampleData();
+            }
+        }
+
+        // Save data to storage
+        function saveData() {
+            try {
+                window.sessionStorage?.setItem('testRecords', JSON.stringify(testRecords));
+            } catch (e) {
+                // Silently fail - data will be kept in memory during session
+                console.log('Data saved in memory for this session');
+            }
+        }
+
+        // Get sample data for demo
+        function getSampleData() {
+            return [
+                {
+                    id: 1,
+                    coaching_institute: 'Allen',
+                    subject: 'Physics',
+                    chapter: 'Mechanics',
+                    test_date: '2024-10-15',
+                    test_booklet_code: 'PHY001',
+                    total_questions: 60,
+                    total_marks: 240,
+                    marks_obtained: 180,
+                    correct_questions: 45,
+                    incorrect_questions: 10,
+                    unattempted_questions: 5,
+                    test_review: 'Good conceptual questions with moderate difficulty',
+                    review_scale: 8,
+                    remarks: 'Need to work on rotational mechanics',
+                    percentage: 75,
+                    created_at: new Date('2024-10-15').toISOString()
+                },
+                {
+                    id: 2,
+                    coaching_institute: 'Aakash',
+                    subject: 'Chemistry',
+                    chapter: 'Organic Chemistry',
+                    test_date: '2024-10-12',
+                    test_booklet_code: 'CHE002',
+                    total_questions: 50,
+                    total_marks: 200,
+                    marks_obtained: 160,
+                    correct_questions: 40,
+                    incorrect_questions: 8,
+                    unattempted_questions: 2,
+                    test_review: 'Excellent coverage of reaction mechanisms',
+                    review_scale: 9,
+                    remarks: 'Strong in organic chemistry concepts',
+                    percentage: 80,
+                    created_at: new Date('2024-10-12').toISOString()
+                }
+            ];
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const targetSection = this.dataset.section;
+                    switchSection(targetSection);
+                });
+            });
+
+            // Form submission
+            document.getElementById('testForm').addEventListener('submit', handleFormSubmit);
+
+            // Range slider
+            document.getElementById('review_scale').addEventListener('input', updateRangeValue);
+
+            // Auto-calculation
+            ['total_questions', 'correct_questions', 'incorrect_questions', 'unattempted_questions'].forEach(id => {
+                document.getElementById(id).addEventListener('input', validateQuestionNumbers);
+            });
+
+            // Search functionality
+            document.getElementById('searchInput').addEventListener('input', filterTable);
+
+            // Export functionality
+            document.getElementById('exportBtn').addEventListener('click', exportToCSV);
+        }
+
+        // Switch sections
+        function switchSection(sectionName) {
+            // Update navigation
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+                if (tab.dataset.section === sectionName) {
+                    tab.classList.add('active');
+                }
+            });
+
+            // Update sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            document.getElementById(sectionName).classList.add('active');
+
+            // Refresh data when switching to statistics or data sections
+            if (sectionName === 'statistics') {
+                renderStatistics();
+            } else if (sectionName === 'data') {
+                renderDataTable();
+            }
+        }
+
+        // Update range value display
+        function updateRangeValue() {
+            const slider = document.getElementById('review_scale');
+            const valueDisplay = document.getElementById('review_scale_value');
+            valueDisplay.textContent = slider.value;
+        }
+
+        // Validate question numbers
+        function validateQuestionNumbers() {
+            const total = parseInt(document.getElementById('total_questions').value) || 0;
+            const correct = parseInt(document.getElementById('correct_questions').value) || 0;
+            const incorrect = parseInt(document.getElementById('incorrect_questions').value) || 0;
+            const unattempted = parseInt(document.getElementById('unattempted_questions').value) || 0;
+
+            const sum = correct + incorrect + unattempted;
+            if (total > 0 && sum !== total) {
+                showFieldError('total_questions', `Total should match: ${correct} + ${incorrect} + ${unattempted} = ${sum}`);
+            } else {
+                clearFieldError('total_questions');
+            }
+        }
+
+        // Form validation
+        function validateForm() {
+            let isValid = true;
+            const form = document.getElementById('testForm');
+            const formData = new FormData(form);
+
+            // Clear previous errors
+            clearAllErrors();
+
+            // Check required fields
+            const requiredFields = [
+                'coaching_institute', 'subject', 'chapter', 'test_date', 'test_booklet_code',
+                'total_questions', 'total_marks', 'marks_obtained', 'correct_questions',
+                'incorrect_questions', 'unattempted_questions', 'test_review', 'review_scale'
+            ];
+
+            requiredFields.forEach(fieldName => {
+                const value = formData.get(fieldName);
+                if (!value || value.trim() === '') {
+                    showFieldError(fieldName, 'This field is required.');
+                    isValid = false;
+                }
+            });
+
+            // Validate numbers
+            const totalQuestions = parseInt(formData.get('total_questions')) || 0;
+            const totalMarks = parseInt(formData.get('total_marks')) || 0;
+            const marksObtained = parseInt(formData.get('marks_obtained')) || 0;
+            const correct = parseInt(formData.get('correct_questions')) || 0;
+            const incorrect = parseInt(formData.get('incorrect_questions')) || 0;
+            const unattempted = parseInt(formData.get('unattempted_questions')) || 0;
+
+            if (marksObtained > totalMarks) {
+                showFieldError('marks_obtained', 'Marks obtained cannot be greater than total marks.');
+                isValid = false;
+            }
+
+            if (totalQuestions > 0 && (correct + incorrect + unattempted) !== totalQuestions) {
+                showFieldError('total_questions', 'Question breakdown must match total questions.');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Show field error
+        function showFieldError(fieldName, message) {
+            const field = document.getElementById(fieldName);
+            const errorDiv = field.parentNode.querySelector('.error-message');
+            field.classList.add('error');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+
+        // Clear field error
+        function clearFieldError(fieldName) {
+            const field = document.getElementById(fieldName);
+            const errorDiv = field.parentNode.querySelector('.error-message');
+            field.classList.remove('error');
+            errorDiv.classList.remove('show');
+        }
+
+        // Clear all errors
+        function clearAllErrors() {
+            document.querySelectorAll('.form-control.error').forEach(field => {
+                field.classList.remove('error');
+            });
+            document.querySelectorAll('.error-message.show').forEach(error => {
+                error.classList.remove('show');
+            });
+        }
+
+        // Show alert message
+        function showAlert(message, type = 'success') {
+            const container = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            container.innerHTML = '';
+            container.appendChild(alert);
+
+            // Auto-remove after 5 seconds
+            setTimeout(() => {
+                alert.remove();
+            }, 5000);
+        }
+
+        // Handle form submission
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            if (!validateForm()) {
+                showAlert('Please fix the errors above.', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const submitText = submitBtn.querySelector('.submit-text');
+            
+            // Show loading state
+            submitBtn.disabled = true;
+            submitText.innerHTML = '<div class="spinner"></div>Saving...';
+
+            // Simulate API call delay
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            try {
+                const formData = new FormData(e.target);
+                const data = {
+                    id: Date.now(),
+                    coaching_institute: formData.get('coaching_institute'),
+                    subject: formData.get('subject'),
+                    chapter: formData.get('chapter'),
+                    test_date: formData.get('test_date'),
+                    test_booklet_code: formData.get('test_booklet_code'),
+                    total_questions: parseInt(formData.get('total_questions')),
+                    total_marks: parseInt(formData.get('total_marks')),
+                    marks_obtained: parseInt(formData.get('marks_obtained')),
+                    correct_questions: parseInt(formData.get('correct_questions')),
+                    incorrect_questions: parseInt(formData.get('incorrect_questions')),
+                    unattempted_questions: parseInt(formData.get('unattempted_questions')),
+                    test_review: formData.get('test_review'),
+                    review_scale: parseInt(formData.get('review_scale')),
+                    remarks: formData.get('remarks') || '',
+                    percentage: Math.round((parseInt(formData.get('marks_obtained')) / parseInt(formData.get('total_marks'))) * 100),
+                    created_at: new Date().toISOString()
+                };
+
+                testRecords.unshift(data);
+                saveData();
+
+                showAlert('✅ Test analysis submitted successfully! Data has been saved.');
+                e.target.reset();
+                updateRangeValue();
+                
+                // Update statistics and data table
+                renderStatistics();
+                renderDataTable();
+
+            } catch (error) {
+                showAlert('❌ Error saving data. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitBtn.disabled = false;
+                submitText.textContent = 'Submit Test Analysis';
+            }
+        }
+
+        // Render statistics
+        function renderStatistics() {
+            if (testRecords.length === 0) {
+                document.getElementById('statsCards').innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📊</div>
+                        <h3>No Data Available</h3>
+                        <p>Submit your first test to see statistics</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Calculate statistics
+            const totalTests = testRecords.length;
+            const avgPercentage = Math.round(testRecords.reduce((sum, test) => sum + test.percentage, 0) / totalTests);
+            const avgRating = Math.round(testRecords.reduce((sum, test) => sum + test.review_scale, 0) / totalTests);
+            const bestScore = Math.max(...testRecords.map(test => test.percentage));
+
+            // Render stats cards
+            document.getElementById('statsCards').innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-value">${totalTests}</div>
+                    <div class="stat-label">Total Tests</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${avgPercentage}%</div>
+                    <div class="stat-label">Average Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${bestScore}%</div>
+                    <div class="stat-label">Best Score</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${avgRating}/10</div>
+                    <div class="stat-label">Average Rating</div>
+                </div>
+            `;
+
+            // Render charts
+            renderCharts();
+        }
+
+        // Render charts
+        function renderCharts() {
+            // Performance trend chart
+            const performanceCtx = document.getElementById('performanceChart').getContext('2d');
+            
+            if (charts.performance) {
+                charts.performance.destroy();
+            }
+
+            const sortedRecords = [...testRecords].sort((a, b) => new Date(a.test_date) - new Date(b.test_date));
+            
+            charts.performance = new Chart(performanceCtx, {
+                type: 'line',
+                data: {
+                    labels: sortedRecords.map(test => new Date(test.test_date).toLocaleDateString()),
+                    datasets: [{
+                        label: 'Score (%)',
+                        data: sortedRecords.map(test => test.percentage),
+                        borderColor: '#1FB8CD',
+                        backgroundColor: 'rgba(31, 184, 205, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: {
+                                callback: function(value) {
+                                    return value + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Subject distribution chart
+            const subjectCtx = document.getElementById('subjectChart').getContext('2d');
+            
+            if (charts.subject) {
+                charts.subject.destroy();
+            }
+
+            const subjectCounts = testRecords.reduce((acc, test) => {
+                acc[test.subject] = (acc[test.subject] || 0) + 1;
+                return acc;
+            }, {});
+
+            charts.subject = new Chart(subjectCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(subjectCounts),
+                    datasets: [{
+                        data: Object.values(subjectCounts),
+                        backgroundColor: ['#1FB8CD', '#FFC185', '#B4413C', '#ECEBD5', '#5D878F']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render data table
+        function renderDataTable() {
+            const container = document.getElementById('tableContainer');
+            
+            if (testRecords.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <h3>No Records Found</h3>
+                        <p>Submit your first test analysis to see data here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const tableHTML = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Institute</th>
+                            <th>Subject</th>
+                            <th>Chapter</th>
+                            <th>Code</th>
+                            <th>Score</th>
+                            <th>Percentage</th>
+                            <th>Rating</th>
+                            <th>Correct</th>
+                            <th>Incorrect</th>
+                            <th>Unattempted</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${testRecords.map(test => `
+                            <tr>
+                                <td>${new Date(test.test_date).toLocaleDateString()}</td>
+                                <td>${test.coaching_institute}</td>
+                                <td>${test.subject}</td>
+                                <td>${test.chapter}</td>
+                                <td>${test.test_booklet_code}</td>
+                                <td>${test.marks_obtained}/${test.total_marks}</td>
+                                <td>${test.percentage}%</td>
+                                <td>${test.review_scale}/10</td>
+                                <td>${test.correct_questions}</td>
+                                <td>${test.incorrect_questions}</td>
+                                <td>${test.unattempted_questions}</td>
+                            </tr>
+                        `).join('')}
+                    </tbody>
+                </table>
+            `;
+            
+            container.innerHTML = tableHTML;
+        }
+
+        // Filter table
+        function filterTable() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('.data-table tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            if (testRecords.length === 0) {
+                showAlert('No data to export.', 'error');
+                return;
+            }
+
+            const headers = [
+                'Date', 'Coaching Institute', 'Subject', 'Chapter', 'Test Code',
+                'Total Questions', 'Total Marks', 'Marks Obtained', 'Percentage',
+                'Correct', 'Incorrect', 'Unattempted', 'Rating', 'Review', 'Remarks'
+            ];
+
+            const csvContent = [
+                headers.join(','),
+                ...testRecords.map(test => [
+                    test.test_date,
+                    `"${test.coaching_institute}"`,
+                    `"${test.subject}"`,
+                    `"${test.chapter}"`,
+                    `"${test.test_booklet_code}"`,
+                    test.total_questions,
+                    test.total_marks,
+                    test.marks_obtained,
+                    test.percentage + '%',
+                    test.correct_questions,
+                    test.incorrect_questions,
+                    test.unattempted_questions,
+                    test.review_scale + '/10',
+                    `"${test.test_review.replace(/"/g, '""')}"`,
+                    `"${test.remarks.replace(/"/g, '""')}"`
+                ].join(','))
+            ].join('\n');
+
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `test-analysis-data-${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showAlert('📥 Data exported successfully as CSV file!');
+        }
+    </script>
+</body>
+</html>
