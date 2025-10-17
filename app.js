@@ -5,8 +5,8 @@ class TestAnalysisApp {
         this.testRecords = [];
         this.loginState = false;
         this.validCredentials = {
-            username: 'Subha_AIR1Test',
-            password: 'Subha@180208'
+            username: 'AIR1Test@analysis',
+            password: 'Max@1808',
         };
         
         this.init();
