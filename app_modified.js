@@ -498,7 +498,9 @@ class TestAnalysisApp {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test Analysis Report</title>
+    <title>Test Analysis Report
+        <img src="neet_logo.png" alt="NEET" width="40">
+    </title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -563,7 +565,7 @@ class TestAnalysisApp {
     </style>
 </head>
 <body>
-    <h1>Test Analysis Report</h1>
+    <h1>Test Analysis Report - By Subha</h1>
     <div class="report-info">
         <p>Generated on: ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
         <p>Total Records: ${records.length}</p>
